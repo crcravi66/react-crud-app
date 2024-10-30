@@ -35,7 +35,7 @@ const Login = () => {
         let user = null;
 
         // // 1. filter auth users with user role
-        const foundUserData = authDatas.find(data => data.role === selectedRole && data.email === email)
+        const foundUserData = authDatas.find(data => data.email === email)
 
         // // // 2. find if the email present in the filtered auth users
         if (foundUserData) {
@@ -57,9 +57,10 @@ const Login = () => {
         }
 
         if (user) {
+            console.log(user)
             localStorage.setItem('email', user.email);
-            login(selectedRole);
-            navigate(selectedRole === 'admin' ? '/react-crud-app/admin' : '/react-crud-app/user');
+            login(user.role);
+            navigate(user.role === 'admin' ? '/react-crud-app/admin' : '/react-crud-app/user');
 
         } else if (!user) {
             setError('Invalid email, password, or role selection. Please try again.');
@@ -94,7 +95,7 @@ const Login = () => {
                             placeholder="Password"
                             className="w-full p-2 mb-4 border border-gray-300  text-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-600"
                         />
-                        <label className="block mb-1 text-start text-sm font-bold text-purple-600">
+                        {/* <label className="block mb-1 text-start text-sm font-bold text-purple-600">
                             Select Role
                         </label>
                         <select
@@ -104,7 +105,7 @@ const Login = () => {
                         >
                             <option value="user" >User</option>
                             <option value="admin">Admin</option>
-                        </select>
+                        </select> */}
                     </div>
 
                     <button

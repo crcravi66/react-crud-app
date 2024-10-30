@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [role, setRole] = useState(localStorage.getItem('role') || 'user');
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const authCurrentUser = useSelector((state) => state.users.user)
+    let authCurrentUser = useSelector((state) => state.users.user)
 
     useEffect(() => {
         localStorage.setItem('role', role);
