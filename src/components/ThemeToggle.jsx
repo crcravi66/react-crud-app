@@ -20,7 +20,7 @@ const ThemeToggle = () => {
     return (
         <>
             <button className='px-3 py-2 border-2 rounded-md m-1' style={backgroundStyle} onClick={toggleTheme}>
-                Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
+                {theme === 'light' ? 'Dark' : 'Light'} Mode
             </button>
         </>
     );

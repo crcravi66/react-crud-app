@@ -36,15 +36,20 @@ const AdminDashboard = () => {
     const [editingIndex, setEditingIndex] = useState(null);
     const [viewing, setViewing] = useState(null);
     const items = useSelector((state) => state.users.users)
+
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
 
-    const handleCreate = () => {
-        dispatch(addUsersAction(formData))
-        setFormData({ name: '', email: '', contact: '' });
+        setFormData({ ...formData, [name]: value });
+
     };
+    const handleCreate = () => {
+        if (formData.name !== "" && formData.email !== "" && formData.contact !== "") {
+            dispatch(addUsersAction(formData))
+        }
+        // setFormData({ name: '', email: '', contact: '' });
+    }
 
     const handleView = (index) => {
         setViewing(items[index]);
@@ -62,14 +67,19 @@ const AdminDashboard = () => {
         dispatch(deleteUsers(index))
     };
 
-
+    const handleDeleteInfoPop = (item, index) => {
+        const isConfirmed = window.confirm(`Are you sure you want to delete this "${item.name}" details?`);
+        if (isConfirmed) {
+            handleDelete(index)
+        }
+    }
     const handleEdit = (index) => {
         setFormData(items[index]);
         setEditingIndex(index);
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-800" style={backgroundStyle}>
+        <div className="flex items-center justify-center  bg-gray-100 dark:bg-gray-800" style={backgroundStyle}>
             <div className="container mx-auto p-6 " style={backgroundStyle}>
                 <h2 className="text-3xl font-bold text-orange-700  mb-4">Admin Dashboard</h2>
                 <button onClick={logout} className="mb-4 bg-red-500 text-white px-4 py-2 rounded">
@@ -77,46 +87,51 @@ const AdminDashboard = () => {
                 </button>
 
                 <div className="flex flex-col mb-4 justify-center ">
-                    <div className="flex flex-col mb-4 items-center justify-center" >
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            className="border w-1/2  px-2 py-1 mb-2"
-                            style={backgroundStyle}
-                        />
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className="border w-1/2 px-2 py-1 mb-2"
-                            style={backgroundStyle}
-                        />
-                        <input
-                            type="text"
-                            name="contact"
-                            placeholder="Contact"
-                            value={formData.contact}
-                            onChange={handleInputChange}
-                            className="border  w-1/2 px-2 py-1 mb-2 "
-                            style={backgroundStyle}
-                        />
-                        {editingIndex === null ? (
+                    <form>
+                        <div className="flex flex-col mb-4 items-center justify-center" >
+                            <input
+                                required
+                                type="text"
+                                name="name"
+                                placeholder="Name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                className="border w-1/2  px-2 py-1 mb-2"
+                                style={backgroundStyle}
+                            />
+                            <input
+                                required
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                className="border w-1/2 px-2 py-1 mb-2"
+                                style={backgroundStyle}
+                            />
+                            <input
+                                required
+                                type="text"
+                                name="contact"
+                                placeholder="Contact"
+                                value={formData.contact}
+                                onChange={handleInputChange}
+                                className="border  w-1/2 px-2 py-1 mb-2 "
+                                style={backgroundStyle}
+                            />
+                            {editingIndex === null ? (
 
-                            <button onClick={handleCreate} className="bg-blue-500 text-white px-4 w-1/5 py-2 rounded">
-                                Add
-                            </button>
-                        ) : (
-                            <button onClick={handleUpdate} className="bg-green-500 text-white px-4 py-2 rounded">
-                                Update
-                            </button>
-                        )}
+                                <button onClick={handleCreate} className="bg-blue-500 text-white px-4 w-1/5 py-2 rounded">
+                                    Add
+                                </button>
+                            ) : (
+                                <button onClick={handleUpdate} className="bg-green-500 text-white px-4 py-2 rounded">
+                                    Update
+                                </button>
+                            )}
 
-                    </div>
+                        </div>
+                    </form>
                     <div className="overflow-x-auto">
                         <table className="min-w-full  bg-white border dark:bg-gray-700" style={tabelStyle} >
                             <thead>
@@ -137,7 +152,7 @@ const AdminDashboard = () => {
                                             <button onClick={() => handleEdit(index)} className="bg-yellow-500 text-white px-3 py-1 rounded">
                                                 Edit
                                             </button>
-                                            <button onClick={() => handleDelete(index)} className="bg-red-500 text-white px-3 py-1 rounded">
+                                            <button onClick={() => handleDeleteInfoPop(item, index)} className="bg-red-500 text-white px-3 py-1 rounded">
                                                 Delete
                                             </button>
                                             <button
@@ -152,6 +167,9 @@ const AdminDashboard = () => {
                             </tbody>
                         </table>
                     </div>
+                    {/* delete pop */}
+
+
 
                     {/* View Modal */}
                     {viewing && (

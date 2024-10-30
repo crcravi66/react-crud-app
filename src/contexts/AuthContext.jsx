@@ -1,12 +1,16 @@
 // src/contexts/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setAuthUser } from '../store/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [role, setRole] = useState(localStorage.getItem('role') || 'user');
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const authCurrentUser = useSelector((state) => state.users.user)
 
     useEffect(() => {
         localStorage.setItem('role', role);
@@ -14,13 +18,13 @@ export const AuthProvider = ({ children }) => {
 
     const login = (selectedRole) => {
         setRole(selectedRole);
-        navigate(selectedRole === 'admin' ? '/react-crud-app/admin' : '/react-crud-app/user');
+        // navigate(selectedRole === 'admin' ? '/react-crud-app/admin' : '/react-crud-app/user');
     };
 
     const logout = () => {
-        setRole('user');
-        localStorage.removeItem('role');
+        dispatch(setAuthUser(null))
         navigate('/react-crud-app/');
+        authCurrentUser = null;
     };
 
     return (

@@ -6,7 +6,6 @@ import { useTheme } from '../contexts/ThemeContext';
 const UserDashboard = () => {
     const items = useSelector(state => state.users.users)
     const { logout } = useAuth();
-
     const { theme } = useTheme();
 
     const backgroundStyle =
