@@ -43,13 +43,12 @@ const Login = () => {
                 dispatch(setAuthUser(foundUserData))
                 user = foundUserData
             } else {
-                setError('PASSWORD Not Same .Please try again.');
-                throw new Error("PASSWORD Not Same .Please try again.");
-
+                setError('Password Not Same .Please try again.');
+                throw new Error("Password Not Same .Please try again.");
             }
         } else {
-            setError('EMAIL not match. Please try again.');
-            throw new Error("EMAIL not match. Please try again.");
+            setError('Email not match. Please try again.');
+            throw new Error("Email not match. Please try again.");
         }
 
         if (location.state?.from) {
@@ -62,9 +61,10 @@ const Login = () => {
             login(user.role);
             navigate(user.role === 'admin' ? '/react-crud-app/admin' : '/react-crud-app/user');
 
-        } else if (!user) {
-            setError('Invalid email, password, or role selection. Please try again.');
         }
+        // else if (!user) {
+        //     setError('Invalid email, password. Please try again.');
+        // }
     };
 
     return (
